@@ -22,7 +22,7 @@ public class BackAndForth : MonoBehaviour {
                     transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0, 0);
                     renderer.material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
                     AudioSource[] sources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
-                    sources[Random.Range(0, sources.Length-1)].Play();
+                    sources[Random.Range(0, sources.Length)].Play();
 		    	}
 		    }
 	    }
