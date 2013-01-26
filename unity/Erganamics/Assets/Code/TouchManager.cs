@@ -21,7 +21,7 @@ public class TouchManager : MonoBehaviour {
 
     private Dictionary<int, ActiveDrag> activeDrags = new Dictionary<int, ActiveDrag>();
 
-    public CandyManager candyManager;
+    public StuffManager stuffManager;
 
 	// Use this for initialization
 	void Start () {
@@ -48,9 +48,9 @@ public class TouchManager : MonoBehaviour {
         Bounds objectBounds = drag.touchObject.collider.bounds;
         Rect objectRect = new Rect(objectBounds.min.x, objectBounds.max.y, objectBounds.size.x, objectBounds.size.y);
 
-        if (RectContains(candyManager.BagRect, pt))
+        if (RectContains(stuffManager.BagRect, pt))
         {
-            candyManager.DropCandyOnBag(drag.touchObject.gameObject);
+            stuffManager.HandleDropPieceOnBag(drag.touchObject.gameObject);
         }
     }
 

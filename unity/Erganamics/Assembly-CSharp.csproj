@@ -46,8 +46,8 @@
   <ItemGroup>
      <Compile Include="Assets\Code\Baby.cs" />
      <Compile Include="Assets\Code\BackAndForth.cs" />
-     <Compile Include="Assets\Code\CandyManager.cs" />
      <Compile Include="Assets\Code\ETouch.cs" />
+     <Compile Include="Assets\Code\GameStateManager.cs" />
      <Compile Include="Assets\Code\Heartbeat.cs" />
      <Compile Include="Assets\Code\PieceOfCandy.cs" />
      <Compile Include="Assets\Code\PieceOfStuff.cs" />
