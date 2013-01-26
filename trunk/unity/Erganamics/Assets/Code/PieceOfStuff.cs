@@ -5,7 +5,6 @@ using Erganamics;
 public class PieceOfStuff : MonoBehaviour {
 
     private GameObject quad;
-    private int stuffType = 0;
 
 	// Use this for initialization
 	void Start () {
