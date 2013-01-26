@@ -1,7 +1,18 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Settings : MonoBehaviour {
     public static Settings Instance { get; private set; }
+
+    public float babyZ = 50.0f;
+    public float candyZ = 40.0f;
+    public float stuffZ = 20.0f;
+    public Vector3 stuffScale = new Vector3(50, 50, 50);
+    public Vector2 stuffBoundsLow = new Vector2(40, 40);
+    public Vector2 stuffBoundsHigh = new Vector2(1240, 300);
+    public int piecesOfCandy = 4;
+    public int piecesOfStuff = 10;
+    public Color[] candyColors = new Color[] { new Color(1, 0, 0), new Color(0, 1, 0), new Color(0, 0, 1), new Color(1, 1, 0), new Color(0, 1, 1), new Color(1, 0, 1) };
 
     public Material quadMaterial;
 
