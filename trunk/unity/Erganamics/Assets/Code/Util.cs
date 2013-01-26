@@ -50,6 +50,8 @@ namespace Erganamics {
 
             quad.renderer.sharedMaterial = material;
 
+            quad.transform.localScale = new Vector3( 100f, 100f, 1f );
+
             return quad;
         }
     }
