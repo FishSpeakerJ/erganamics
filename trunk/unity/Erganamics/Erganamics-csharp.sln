@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 
 Project("{AADA43C5-21C6-B5EF-5C02-652E47946AD5}") = "Erganamics", "Assembly-CSharp-vs.csproj", "{67A13FFA-680E-76F6-4D20-D283BB1F7E06}"
@@ -23,7 +23,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-														GlobalSection(MonoDevelopProperties) = preSolution
+																											GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
