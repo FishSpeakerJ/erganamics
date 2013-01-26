@@ -46,7 +46,9 @@
   <ItemGroup>
      <Compile Include="Assets\Code\BackAndForth.cs" />
      <Compile Include="Assets\Code\Heartbeat.cs" />
+     <Compile Include="Assets\Code\Settings.cs" />
      <Compile Include="Assets\Code\Util.cs" />
+     <None Include="Assets\Shaders\ErgUnlitAlpha.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

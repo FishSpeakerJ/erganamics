@@ -3,7 +3,15 @@ using System.Collections;
 
 namespace Erganamics {
     public class Util {
-        public static GameObject CreateQuad() {
+        public static readonly int screenWidth = 1280;
+        public static readonly int screenHeight = 752;
+
+        // This should be called to create a quad at runtime.
+        public static GameObject CreateQuadAtRuntime() {
+            return CreateQuad( Settings.Instance.quadMaterial );
+        }
+
+        public static GameObject CreateQuad( Material material ) {
             GameObject quad = new GameObject( "Quad", typeof( MeshFilter ), typeof( MeshRenderer ) );
             Mesh mesh = new Mesh();
 
@@ -12,6 +20,13 @@ namespace Erganamics {
                 new Vector3( 0f, 1f, 0f ),
                 new Vector3( 1f, 1f, 0f ),
                 new Vector3( 1f, 0f, 0f ),
+            };
+
+            mesh.normals = new Vector3[] {
+                new Vector3( 0f, 0f, 1f ),
+                new Vector3( 0f, 0f, 1f ),
+                new Vector3( 0f, 0f, 1f ),
+                new Vector3( 0f, 0f, 1f ),
             };
 
             mesh.uv = new Vector2[] {
@@ -26,7 +41,14 @@ namespace Erganamics {
                 0, 2, 3,
             };
 
+            mesh.RecalculateBounds();
+
             quad.GetComponent<MeshFilter>().mesh = mesh;
+
+            var meshCollider = quad.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = mesh;
+
+            quad.renderer.sharedMaterial = material;
 
             return quad;
         }
