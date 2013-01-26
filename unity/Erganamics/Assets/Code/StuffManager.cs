@@ -17,7 +17,6 @@ public class StuffManager : MonoBehaviour {
             var quad = Util.CreateQuadAtRuntime();
             quad.name = string.Format("PieceOfStuff{0}", i);
             quad.transform.position = new Vector3(Random.Range(Settings.Instance.stuffBoundsLow[0], Settings.Instance.stuffBoundsHigh[0]), Random.Range(Settings.Instance.stuffBoundsLow[1], Settings.Instance.stuffBoundsHigh[1]), Settings.Instance.stuffZ);
-            quad.AddComponent<ClickAndDrag>();
             listOfStuff.Add(quad.AddComponent<PieceOfStuff>());
 
         }
@@ -27,7 +26,6 @@ public class StuffManager : MonoBehaviour {
             var quad = Util.CreateQuadAtRuntime();
             quad.name = string.Format("PieceOfCandy{0}", i);
             quad.transform.position = new Vector3(Random.Range(Settings.Instance.stuffBoundsLow[0], Settings.Instance.stuffBoundsHigh[0]), Random.Range(Settings.Instance.stuffBoundsLow[1], Settings.Instance.stuffBoundsHigh[1]), Settings.Instance.candyZ);
-            quad.AddComponent<ClickAndDrag>();
             listOfCandy.Add(quad.AddComponent<PieceOfCandy>());
         }
 
