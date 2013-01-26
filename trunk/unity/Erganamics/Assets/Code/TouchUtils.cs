@@ -13,7 +13,7 @@ namespace Erganamics {
         public static ETouch[] GetTouches()
         {
             int touchIndex = 0;
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && Input.touchCount == 0)
             {
                 touchIndex = 1;
                 if (mouseTouch == null)
