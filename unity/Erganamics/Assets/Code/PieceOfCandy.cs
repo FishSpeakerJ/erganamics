@@ -9,7 +9,7 @@ public class PieceOfCandy : MonoBehaviour
 	void Start () {
         candyType = Random.Range(0, Settings.Instance.candyColors.Length);
         renderer.material.color = Settings.Instance.candyColors[candyType];
-        transform.localScale = Settings.Instance.stuffScale;
+        transform.localScale = Settings.Instance.candyScale;
 	}
 	
 	// Update is called once per frame
