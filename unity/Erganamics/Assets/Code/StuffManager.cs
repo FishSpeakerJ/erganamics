@@ -101,6 +101,11 @@ public class StuffManager : MonoBehaviour {
 
     public void PutOnTop(GameObject piece)
     {
+        // return if only one candy
+        if (getNumberOfCandyPieces() == 1)
+        {
+            return;
+        }
         float minZ = float.MaxValue;
         foreach (PieceOfCandy p in listOfCandy)
         {
