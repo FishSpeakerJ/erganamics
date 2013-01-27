@@ -10,7 +10,7 @@ public class StuffManager : MonoBehaviour {
     public GameObject candyBag;
     public GameObject bagGlow;
     public GameStateManager gameStateManager;
-    public Material candyMaterial;
+    public Material[] candyMaterials;
     public Rect bagRect;
 
     private List<PieceOfStuff> listOfStuff = new List<PieceOfStuff>();
@@ -60,7 +60,7 @@ public class StuffManager : MonoBehaviour {
             var quad = Util.CreateQuadAtRuntime();
             quad.name = string.Format("PieceOfCandy{0}", i);
             quad.transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Settings.Instance.candyZ + i * .1f);
-            quad.renderer.material = candyMaterial;
+            quad.renderer.material = candyMaterials[i%candyMaterials.Length];
             quad.transform.Rotate(new Vector3(0,0, Random.Range(0f, 360f)));
             listOfCandy.Add(quad.AddComponent<PieceOfCandy>());
         }

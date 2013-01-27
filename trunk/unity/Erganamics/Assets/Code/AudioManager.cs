@@ -44,6 +44,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void FadeToMusic( int track, string musicName ) {
+        Debug.Log(musicName);
         musicTracks[track].FadeToMusic( musicName );
     }
 
