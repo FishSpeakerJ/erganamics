@@ -20,6 +20,7 @@ public class Baby : MonoBehaviour {
     public Material asleep2Material;
     public Material asleep3Material;
     public Material angryMaterial;
+    public Material angryMaterial2;
     public Material halfAwakeMaterial;
     public Material startledMaterial;
     public Material awakeMaterial;
@@ -283,13 +284,25 @@ public class Baby : MonoBehaviour {
         }
         else if (babyState == BabyState.ANGRY)
         {
-            if (timeInState < 1.5)
+            if (timeInState < 1)
             {
                 babyHead.renderer.material = startledMaterial;
             }
             else
             {
-                babyHead.renderer.material = angryMaterial;
+                float animTime = timeInState % 3f;
+                if (animTime < 1.5)
+                {
+                    babyHead.renderer.material = angryMaterial;
+                }
+                else if (animTime < 1.75)
+                {
+                    babyHead.renderer.material = angryMaterial2;
+                }
+                else
+                {
+                    babyHead.renderer.material = angryMaterial;
+                }
             }
         }
     }
