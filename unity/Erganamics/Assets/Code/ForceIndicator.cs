@@ -41,7 +41,7 @@ public class ForceIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	private void Update() {
-        forceSamples.Add( new ForceSample( Time.time, Input.acceleration.y ) );
+        forceSamples.Add( new ForceSample( Time.time, Input.acceleration.x ) );
 
         float timeoutThreshold = Time.time - sampleInterval;
         while( forceSamples[0].time < timeoutThreshold ) {
