@@ -38,6 +38,15 @@ public class Baby : MonoBehaviour {
             touchManager.BadTouchCandy = false;
             State = BabyState.ANGRY;
         }
+        else if (touchManager.CandyTooFast)
+        {
+            touchManager.CandyTooFast = false;
+            if (State == BabyState.ASLEEP)
+            {
+
+                State = BabyState.AWAKE;
+            }
+        }
         else
         {
             switch (State)

@@ -17,6 +17,8 @@ public class Settings : MonoBehaviour {
     public Vector2 stuffBoundsHigh = new Vector2(1240, 300);
     public int piecesOfCandy = 5;
     public int piecesOfStuff = 80;
+    public float babySpeedAwakeThreshold = 1000.0f;
+
     public Color[] candyColors = new Color[] { new Color(1, 0, 0), new Color(0, 1, 0), new Color(0, 0, 1), new Color(1, 1, 0), new Color(0, 1, 1), new Color(1, 0, 1) };
 
     public Material quadMaterial;
