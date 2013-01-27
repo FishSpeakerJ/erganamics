@@ -92,7 +92,7 @@ public class TouchManager : MonoBehaviour {
         drag.touchObject.position = new Vector3(drag.touchObject.position.x + clickOffset.x, drag.touchObject.position.y + clickOffset.y, drag.touchObject.position.z);
         drag.previousPt = newPt;
         speed = clickOffset.magnitude / Time.deltaTime;
-        if (speed > Settings.Instance.babySpeedAwakeThreshold)
+        if (speed > Settings.Instance.babySpeedAwakeThreshold && stuffManager.getNumberOfCandyPieces() > 1)
         {
             candyTooFast = true;
         }

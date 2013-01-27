@@ -74,6 +74,10 @@ public class StuffManager : MonoBehaviour {
 	
 	}
 
+    public int getNumberOfCandyPieces()
+    {
+        return listOfCandy.Count;
+    }
     private bool glowActive = false;
 
     public void SetDropFeedbackVisibility(bool visible)
