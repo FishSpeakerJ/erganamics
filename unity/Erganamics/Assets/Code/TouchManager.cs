@@ -24,7 +24,10 @@ public class TouchManager : MonoBehaviour {
     public StuffManager stuffManager;
     public Baby baby;
     public GameStateManager gameStateManager;
+    public GameObject slowWarning;
 
+    public bool showSlowWarning = false;
+    public float timeWarningHasBeenShowing = 0.0f;
 
     public float speed = 0.0f;
     private bool badTouchCandy = false;
@@ -101,6 +104,8 @@ public class TouchManager : MonoBehaviour {
         if (speed > Settings.Instance.babySpeedAwakeThreshold && stuffManager.getNumberOfCandyPieces() > 1)
         {
             candyTooFast = true;
+            showSlowWarning = true;
+            slowWarning.SetActive(true);
         }
         else
         {
@@ -124,6 +129,17 @@ public class TouchManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if (showSlowWarning)
+        {
+            timeWarningHasBeenShowing += Time.deltaTime;
+            if (timeWarningHasBeenShowing > Settings.Instance.timeToShowWarningFor)
+            {
+                timeWarningHasBeenShowing = 0.0f;
+                showSlowWarning = false;
+                slowWarning.SetActive(false);
+            }
+        }
+
 
         // Drop all current drags if the baby wakes up!
         if (baby.State == Baby.BabyState.ANGRY || baby.State == Baby.BabyState.AWAKE)

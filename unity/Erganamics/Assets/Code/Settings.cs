@@ -26,6 +26,7 @@ public class Settings : MonoBehaviour {
     public float timeSpentInAwakeStateBeforeShowingTutorial = 4.0f;  //secs
     public float timeToFadeInTutorialOver = 1.0f;  // secs
     public float timeToPauseOnEachFrameOfTutorial = 0.6f;  //secs
+    public float timeToShowWarningFor = 2.0f;  //secs
 
     public Material quadMaterial;
 
