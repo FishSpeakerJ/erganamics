@@ -34,7 +34,7 @@ public class StuffManager : MonoBehaviour {
         {
             var quad = Util.CreateQuadAtRuntime();
             quad.name = string.Format("PieceOfStuff{0}", i);
-            quad.transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Settings.Instance.stuffZ);
+            quad.transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Settings.Instance.stuffZ + i*.1f);
             listOfStuff.Add(quad.AddComponent<PieceOfStuff>());
 
         }
@@ -43,7 +43,7 @@ public class StuffManager : MonoBehaviour {
         {
             var quad = Util.CreateQuadAtRuntime();
             quad.name = string.Format("PieceOfCandy{0}", i);
-            quad.transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Settings.Instance.candyZ);
+            quad.transform.position = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Settings.Instance.candyZ + i * .1f);
             quad.renderer.material = candyMaterial;
             quad.transform.Rotate(new Vector3(0,0, Random.Range(0f, 360f)));
             listOfCandy.Add(quad.AddComponent<PieceOfCandy>());
@@ -62,6 +62,29 @@ public class StuffManager : MonoBehaviour {
     public void SetDropFeedbackVisibility(bool visible)
     {
         this.bagGlow.SetActive(visible);
+    }
+
+    public void PutOnTop(GameObject piece)
+    {
+        float minZ = float.MaxValue;
+        foreach (PieceOfCandy p in listOfCandy)
+        {
+            if (p.gameObject != piece && p.transform.position.z < minZ)
+            {
+                minZ = p.transform.position.z;
+            }
+            p.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, p.transform.position.z + .1f);
+        }
+        foreach (PieceOfStuff p in listOfStuff)
+        {
+            if (p.gameObject != piece && p.transform.position.z < minZ)
+            {
+                minZ = p.transform.position.z;
+            }
+            p.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, p.transform.position.z + .1f);
+        }
+        Debug.Log(minZ);
+        piece.transform.position = new Vector3(piece.transform.position.x, piece.transform.position.y, minZ);
     }
 
     public void HandleDropPieceOnBag(GameObject piece)

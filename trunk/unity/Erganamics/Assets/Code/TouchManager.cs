@@ -61,6 +61,7 @@ public class TouchManager : MonoBehaviour {
     {
         ActiveDrag drag = activeDrags[key];
         drag.touchObject.gameObject.transform.localScale /= Settings.Instance.pickupScale;
+        stuffManager.PutOnTop(drag.touchObject.gameObject);
         activeDrags.Remove(key);
         if (RectContains(stuffManager.BagRect, pt))
         {
@@ -75,6 +76,7 @@ public class TouchManager : MonoBehaviour {
             ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
             activeDrags.Add(touch.fingerId, drag);
             t.gameObject.transform.localScale = t.gameObject.transform.localScale * Settings.Instance.pickupScale;
+            t.gameObject.transform.position = new Vector3(t.gameObject.transform.position.x, t.gameObject.transform.position.y, Settings.Instance.stuffZ - 5f);
         }
         else
         {
