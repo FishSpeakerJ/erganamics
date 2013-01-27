@@ -20,18 +20,15 @@ public class Baby : MonoBehaviour {
 
     private BabyState babyState = BabyState.ASLEEP;
     private float timeInState = 0;
-    private float startTime;
     private bool playingLullaby = false;
 
 	// Use this for initialization
 	void Start () {
-	    startTime = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         timeInState += Time.deltaTime;
-        bool touchedCandy = touchManager.BadTouchCandy;
         if (forceIndicator.GetState() == ForceState.JustRight)
         {
             if (!playingLullaby)

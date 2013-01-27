@@ -63,7 +63,6 @@ public class TouchManager : MonoBehaviour {
         ActiveDrag drag = activeDrags[key];
         drag.touchObject.gameObject.transform.localScale /= Settings.Instance.pickupScale;
         stuffManager.PutOnTop(drag.touchObject.gameObject);
-        activeDrags.Remove(key);
         if (RectContains(stuffManager.BagRect, pt))
         {
             stuffManager.HandleDropPieceOnBag(drag.touchObject.gameObject);
@@ -127,6 +126,7 @@ public class TouchManager : MonoBehaviour {
             {
                 EndDrag(key, activeDrags[key].touchObject.gameObject.transform.position);
             }
+            activeDrags.Clear();
         }
         ETouch[] touches = Erganamics.TouchUtils.GetTouches();
         bool isOverBag = false;
@@ -141,6 +141,7 @@ public class TouchManager : MonoBehaviour {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
                     EndDrag(t.fingerId, hitPoint);
+                    activeDrags.Remove(t.fingerId);
                 }
             }
             else if (t.phase == TouchPhase.Began)
@@ -148,15 +149,20 @@ public class TouchManager : MonoBehaviour {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
                     EndDrag(t.fingerId, hitPoint);
+                    activeDrags.Remove(t.fingerId);
                 }
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit) && IsDraggable(hit.collider.gameObject))
+                bool hasHit = Physics.Raycast(ray, out hit);
+                if (hasHit)
                 {
-                    BeginDrag(t, hit.transform, hitPoint);
-                }
-                else if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.name == "ReplayButton")
-                {
-                    gameStateManager.changeStateTo(Settings.GameState.Title);
+                    if (IsDraggable(hit.collider.gameObject))
+                    {
+                        BeginDrag(t, hit.transform, hitPoint);
+                    }
+                    else if (hit.collider.gameObject.name == "replayButton")
+                    {
+                        gameStateManager.changeStateTo(Settings.GameState.Title);
+                    }
                 }
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)

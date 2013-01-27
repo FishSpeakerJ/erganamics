@@ -18,7 +18,7 @@ public class StuffManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        resetLevel();
+        //resetLevel();
     }
 
     public void resetLevel()
