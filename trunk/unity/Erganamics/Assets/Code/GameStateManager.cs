@@ -3,8 +3,6 @@ using System.Collections;
 using System;
 
 public class GameStateManager : MonoBehaviour {
-    public GameObject winScreen;
-    public GameObject loseScreen;
     public GameObject replayButton;
     public GameObject blackCurtain;
     public Baby baby;
@@ -83,27 +81,25 @@ public class GameStateManager : MonoBehaviour {
 
     void exitWin()
     {
-        winScreen.SetActive( false );
         replayButton.SetActive( false );
         blackCurtain.SetActive( false );
     }
 
     bool enterLose()
     {
-        this.loseScreen.SetActive(true);
         return true;
     }
 
     void exitLose()
     {
-        this.loseScreen.SetActive(false);
     }
 
     private IEnumerator WinSequence() {
         // -- show win screen
         // -- fade to black
         // -- show replay button
-        winScreen.SetActive( true );
+        yield return new WaitForSeconds(.5f);
+        baby.ShowFinalBaby();
         yield return new WaitForSeconds( 2f );
 
         yield return StartCoroutine( FadeToBlack.Instance.FadeOut( 3f ) );

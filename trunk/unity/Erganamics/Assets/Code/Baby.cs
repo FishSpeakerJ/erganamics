@@ -38,7 +38,8 @@ public class Baby : MonoBehaviour {
     private BabyState previousState = BabyState.ASLEEP;
     private float timeInState = 0;
     private bool playingLullaby = false;
-
+    private bool isDone = false;
+    private int angryCount = 0;
 	// Use this for initialization
 	void Start () {
         rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -182,11 +183,26 @@ public class Baby : MonoBehaviour {
     {
         this.babyBody.SetActive(false);
         this.babyHead.SetActive(false);
-        this.finalBaby.SetActive(true);
+        if (angryCount < 10)
+        {
+            AudioManager.Instance.PlaySoundEffect("happy1");
+            this.finalBaby.SetActive(true);
+        }
+        else
+        {
+            AudioManager.Instance.PlaySoundEffect("growl");
+            this.finalBabyAngry.SetActive(true);
+        }
+        
+        isDone = true;
     }
 
     private void UpdateTextures()
     {
+        if (isDone)
+        {
+            return;
+        }
         if (babyState == BabyState.ASLEEP)
         {
             float animTime = timeInState % 5f;
@@ -288,6 +304,7 @@ public class Baby : MonoBehaviour {
                 }
                 else if (value == BabyState.ANGRY)
                 {
+                    angryCount++;
                     babyHead.renderer.material = angryMaterial;
                     AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Fast");
                     AudioManager.Instance.PlaySoundEffect("crying1");
