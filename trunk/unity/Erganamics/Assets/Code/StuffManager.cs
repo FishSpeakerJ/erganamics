@@ -85,7 +85,14 @@ public class StuffManager : MonoBehaviour {
         if( activeDrags.Count > 0 ) {
             this.bagGlow.SetActive(true);
             Color c = this.bagGlow.renderer.material.color;
-            this.bagGlow.renderer.material.color = new Color( c.r, c.g, c.b, Mathf.Sin( Time.time*8f ) );
+            if (!visible)
+            {
+                this.bagGlow.renderer.material.color = new Color(c.r, c.g, c.b, Mathf.Sin(Time.time * 8f));
+            }
+            else
+            {
+                this.bagGlow.renderer.material.color = new Color(c.r, c.g, c.b, 1f);
+            }
         } else {
             this.bagGlow.SetActive(false);
         }
