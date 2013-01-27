@@ -88,7 +88,7 @@ public class StuffManager : MonoBehaviour {
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(10f, 300f, 1000f, 20f), "glowActive "+glowActive);
+        //GUI.Label(new Rect(10f, 300f, 1000f, 20f), "glowActive "+glowActive);
     }
 
     public void PutOnTop(GameObject piece)
