@@ -23,6 +23,15 @@ public class Baby : MonoBehaviour {
     public Material startledMaterial;
     public Material awakeMaterial;
 
+    // tutorial vars
+    public GameObject rockingTutorial1;
+    public GameObject rockingTutorial2;
+    public float timeLeftToDisplayRockingTutorial = 0.0f;
+    public bool fadeInTutorial = false;
+    public bool tutorialVisible = false;
+    public float tutorialFadeTimeCount = 0.0f;
+    public float timeOnThisTutorialFrame = 0.0f;
+    public int currentTutorialFrame = 0;
 
     private BabyState babyState = BabyState.ASLEEP;
     private BabyState previousState = BabyState.ASLEEP;
@@ -31,11 +40,69 @@ public class Baby : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 	}
 	
+    public void startRockingTutorial()
+    {
+        if (timeLeftToDisplayRockingTutorial > 0)
+        {
+            return;
+        }
+        fadeInTutorial = true;
+        tutorialVisible = true;
+        timeLeftToDisplayRockingTutorial = Mathf.Min(Settings.Instance.maxTimeBacklogAllowedForViewingRockingTutorial, timeLeftToDisplayRockingTutorial + Settings.Instance.timeToAddToViewingTimeBacklogForRockingTutorialEachIncident);
+    }
+
 	// Update is called once per frame
 	void Update () {
         timeInState += Time.deltaTime;
+
+        // If I've been awake long enough show the tutorial
+        if (timeInState > Settings.Instance.timeSpentInAwakeStateBeforeShowingTutorial && (State == BabyState.AWAKE || State == BabyState.ANGRY))
+        {
+            startRockingTutorial();
+        }
+        if (tutorialVisible)
+        {
+            timeLeftToDisplayRockingTutorial -= Time.deltaTime;
+            if (fadeInTutorial)
+            {
+                tutorialFadeTimeCount += Time.deltaTime;
+                if (tutorialFadeTimeCount > Settings.Instance.timeToFadeInTutorialOver)
+                {
+                    fadeInTutorial = false;
+                    rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, tutorialFadeTimeCount / Settings.Instance.timeToFadeInTutorialOver);
+                rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, tutorialFadeTimeCount / Settings.Instance.timeToFadeInTutorialOver);
+            }
+            timeOnThisTutorialFrame += Time.deltaTime;
+            if (timeOnThisTutorialFrame > Settings.Instance.timeToPauseOnEachFrameOfTutorial)
+            {
+                if (currentTutorialFrame == 0)
+                {
+                    rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                else
+                {
+                    rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                }
+                currentTutorialFrame = 1 - currentTutorialFrame;
+                timeOnThisTutorialFrame = 0.0f;
+            }
+            if (timeLeftToDisplayRockingTutorial < 0)
+            {
+                tutorialVisible = false;
+                fadeInTutorial = false;
+            }
+
+        }   
+
         if (forceIndicator.GetState() == ForceState.JustRight)
         {
             if (!playingLullaby)
