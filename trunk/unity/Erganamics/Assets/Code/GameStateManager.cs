@@ -7,7 +7,7 @@ public class GameStateManager : MonoBehaviour {
     public GameObject winScreen;
     public GameObject loseScreen;
     public GameObject replayButton;
-
+    public Baby baby;
     public StuffManager stuffManager;
 
     public Action exitCurrentState { get; set; }
@@ -58,6 +58,7 @@ public class GameStateManager : MonoBehaviour {
     bool enterTitle()
     {
         stuffManager.resetLevel();
+        baby.State = Baby.BabyState.AWAKE;
         return true;
     }
 
