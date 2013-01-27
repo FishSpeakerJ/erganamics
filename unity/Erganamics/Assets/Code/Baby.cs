@@ -10,6 +10,7 @@ public class Baby : MonoBehaviour {
         AWAKE
     }
 
+    public TouchManager touchManager;
     public ForceIndicator forceIndicator;
 	public GameObject babyBody;
     public Material asleepMaterial;
@@ -18,6 +19,7 @@ public class Baby : MonoBehaviour {
 
 
     private BabyState babyState = BabyState.ASLEEP;
+    private float timeInState = 0;
     private float startTime;
 
 	// Use this for initialization
@@ -27,18 +29,58 @@ public class Baby : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        timeInState += Time.deltaTime;
+        bool touchedCandy = touchManager.TouchedCandy;
 
-        if (forceIndicator.GetState() == ForceState.TooLow)
+
+        if (touchManager.TouchedCandy)
         {
-            State = BabyState.AWAKE;
-        }
-        else if (forceIndicator.GetState() == ForceState.JustRight)
-        {
-            State = BabyState.ASLEEP;
-        }
-        else if (forceIndicator.GetState() == ForceState.TooHigh)
-        {
+            touchManager.TouchedCandy = false;
             State = BabyState.ANGRY;
+        }
+        else
+        {
+            switch (State)
+            {
+                case BabyState.ASLEEP:
+                    {
+                        if (forceIndicator.GetState() == ForceState.TooLow)
+                        {
+                            State = BabyState.AWAKE;
+                        }
+                        else if (forceIndicator.GetState() == ForceState.TooHigh)
+                        {
+                            State = BabyState.ANGRY;
+                        }
+                    }
+                    break;
+                case BabyState.AWAKE:
+                    {
+                        if (timeInState > 2.0)
+                        {
+                            if (forceIndicator.GetState() == ForceState.JustRight)
+                            {
+                                State = BabyState.ASLEEP;
+                            }
+                            else if (forceIndicator.GetState() == ForceState.TooHigh)
+                            {
+                                State = BabyState.ANGRY;
+                            }
+                        }
+                    }
+                    break;
+                case BabyState.ANGRY:
+                    {
+                        if (timeInState > 2.0)
+                        {
+                            if (forceIndicator.GetState() == ForceState.JustRight)
+                            {
+                                State = BabyState.AWAKE;
+                            }
+                        }
+                    }
+                    break;
+            }
         }
 	}
 
@@ -47,18 +89,22 @@ public class Baby : MonoBehaviour {
         get { return this.babyState; }
         set
         {
-            babyState = value;
-            if (babyState == BabyState.ASLEEP)
+            if (babyState != value)
             {
-                babyBody.renderer.material = asleepMaterial;
-            }
-            else if (babyState == BabyState.AWAKE)
-            {
-                babyBody.renderer.material = awakeMaterial;
-            }
-            else if (babyState == BabyState.ANGRY)
-            {
-                babyBody.renderer.material = angryMaterial;
+                timeInState = 0;
+                babyState = value;
+                if (babyState == BabyState.ASLEEP)
+                {
+                    babyBody.renderer.material = asleepMaterial;
+                }
+                else if (babyState == BabyState.AWAKE)
+                {
+                    babyBody.renderer.material = awakeMaterial;
+                }
+                else if (babyState == BabyState.ANGRY)
+                {
+                    babyBody.renderer.material = angryMaterial;
+                }
             }
         }
     }
