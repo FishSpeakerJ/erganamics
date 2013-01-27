@@ -21,6 +21,7 @@ public class Baby : MonoBehaviour {
     private BabyState babyState = BabyState.ASLEEP;
     private float timeInState = 0;
     private float startTime;
+    private bool playingLullaby = false;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +32,19 @@ public class Baby : MonoBehaviour {
 	void Update () {
         timeInState += Time.deltaTime;
         bool touchedCandy = touchManager.BadTouchCandy;
-
+        if (forceIndicator.GetState() == ForceState.JustRight)
+        {
+            if (!playingLullaby)
+            {
+                AudioManager.Instance.FadeToMusic(0, "brahmsMusicBox1");
+                playingLullaby = true;
+            }
+        }
+        else if (playingLullaby)
+        {
+            AudioManager.Instance.FadeToMusic(0, null);
+            playingLullaby = false;
+        }
 
         if (touchManager.BadTouchCandy)
         {
@@ -100,19 +113,28 @@ public class Baby : MonoBehaviour {
             if (babyState != value)
             {
                 timeInState = 0;
-                babyState = value;
-                if (babyState == BabyState.ASLEEP)
+                
+                if (value == BabyState.ASLEEP)
                 {
                     babyBody.renderer.material = asleepMaterial;
+                    AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Slow");
                 }
-                else if (babyState == BabyState.AWAKE)
+                else if (value == BabyState.AWAKE)
                 {
                     babyBody.renderer.material = awakeMaterial;
+                    AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Normal");
+                    if (babyState == BabyState.ASLEEP)
+                    {
+                        AudioManager.Instance.PlaySoundEffect("stirring1");
+                    }
                 }
-                else if (babyState == BabyState.ANGRY)
+                else if (value == BabyState.ANGRY)
                 {
                     babyBody.renderer.material = angryMaterial;
+                    AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Fast");
+                    AudioManager.Instance.PlaySoundEffect("crying1");
                 }
+                babyState = value;
             }
         }
     }
