@@ -213,6 +213,16 @@ public class Baby : MonoBehaviour {
         isDone = true;
     }
 
+    public void ResetBaby()
+    {
+        this.babyBody.SetActive(true);
+        this.babyHead.SetActive(true);
+        this.finalBaby.SetActive(false);
+        this.finalBabyAngry.SetActive(false);
+        this.State = BabyState.AWAKE;
+        UpdateTextures();
+    }
+
     private void UpdateTextures()
     {
         if (isDone)
@@ -290,7 +300,15 @@ public class Baby : MonoBehaviour {
             }
             else
             {
-                float animTime = timeInState % 3f;
+                if (timeInState > 3 && (timeInState - Time.deltaTime) < 3)
+                {
+                    AudioManager.Instance.PlaySoundEffect("crying2");
+                }
+                if (timeInState > 6 && (timeInState - Time.deltaTime) < 6)
+                {
+                    AudioManager.Instance.PlaySoundEffect("crying3");
+                }
+                float animTime = timeInState % 7f;
                 if (animTime < 1.5)
                 {
                     babyHead.renderer.material = angryMaterial;
@@ -299,9 +317,41 @@ public class Baby : MonoBehaviour {
                 {
                     babyHead.renderer.material = angryMaterial2;
                 }
+                else if (animTime < 3)
+                {
+                    babyHead.renderer.material = angryMaterial;
+                }
+                else if (animTime < 3.25)
+                {
+                    babyHead.renderer.material = angryMaterial2;
+                }
+                else if (animTime < 5)
+                {
+                    babyHead.renderer.material = angryMaterial;
+                }
+                else if (animTime < 5.25)
+                {
+                    babyHead.renderer.material = angryMaterial2;
+                }
+                else if (animTime < 6)
+                {
+                    babyHead.renderer.material = angryMaterial;
+                }
+                else if (animTime < 6.25)
+                {
+                    babyHead.renderer.material = angryMaterial2;
+                }
                 else
                 {
                     babyHead.renderer.material = angryMaterial;
+                }
+                if (animTime > 3 && (animTime - Time.deltaTime) < 3)
+                {
+                    AudioManager.Instance.PlaySoundEffect("crying2");
+                }
+                if (animTime > 6 && (animTime - Time.deltaTime) < 6)
+                {
+                    AudioManager.Instance.PlaySoundEffect("crying3");
                 }
             }
         }
@@ -312,6 +362,11 @@ public class Baby : MonoBehaviour {
         get { return this.babyState; }
         set
         {
+            if (isDone)
+            {
+                isDone = false;
+
+            }
             if (babyState != value)
             {
                 timeInState = 0;
