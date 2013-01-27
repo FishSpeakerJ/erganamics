@@ -15,6 +15,7 @@ public class Baby : MonoBehaviour {
 	public GameObject babyBody;
     public GameObject babyHead;
     public GameObject finalBaby;
+    public GameObject finalBabyAngry;
     public Material asleep1Material;
     public Material asleep2Material;
     public Material asleep3Material;
@@ -177,6 +178,13 @@ public class Baby : MonoBehaviour {
         UpdateTextures();
 	}
 
+    public void ShowFinalBaby()
+    {
+        this.babyBody.SetActive(false);
+        this.babyHead.SetActive(false);
+        this.finalBaby.SetActive(true);
+    }
+
     private void UpdateTextures()
     {
         if (babyState == BabyState.ASLEEP)
@@ -231,15 +239,15 @@ public class Baby : MonoBehaviour {
             }
             else if (timeInState < 3)
             {
-                babyHead.renderer.material = halfAwakeMaterial;
+                babyHead.renderer.material = awakeMaterial;
             }
             else if (timeInState < 3.25)
             {
-                babyHead.renderer.material = asleep1Material;
+                babyHead.renderer.material = halfAwakeMaterial;
             }
             else
             {
-                babyHead.renderer.material = halfAwakeMaterial;
+                babyHead.renderer.material = awakeMaterial;
             }
         }
         else if (babyState == BabyState.ANGRY)
