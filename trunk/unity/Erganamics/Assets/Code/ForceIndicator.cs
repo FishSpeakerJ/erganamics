@@ -41,7 +41,7 @@ public class ForceIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	private void Update() {
-        forceSamples.Add( new ForceSample( Time.time, Input.acceleration.x ) );
+        forceSamples.Add( new ForceSample( Time.time, Input.acceleration.y ) );
 
         float timeoutThreshold = Time.time - sampleInterval;
         while( forceSamples[0].time < timeoutThreshold ) {
@@ -105,6 +105,7 @@ public class ForceIndicator : MonoBehaviour {
         if( showDebugText ) {
             GUI.Label( new Rect( 10f, 0f, 1000f, 20f ), string.Format( "ForceState: {0}", GetState() ) );
             GUI.Label( new Rect( 10f, 20f, 1000f, 20f ), string.Format( "AverageAmplitude: {0}", GetAverageAmplitude() ) );
+            GUI.Label(new Rect(10f, 40f, 1000f, 20f), string.Format("Acceleration: {0} {1} {2}", Input.acceleration.x, Input.acceleration.y, Input.acceleration.z));
         }
 
         if( showOverrideGUI ) {
