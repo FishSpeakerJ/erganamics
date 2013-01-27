@@ -182,6 +182,6 @@ public class TouchManager : MonoBehaviour {
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(10f, 80f, 1000f, 20f), string.Format("Speed: {0}", speed));
+        //GUI.Label(new Rect(10f, 80f, 1000f, 20f), string.Format("Speed: {0}", speed));
     }
 }
