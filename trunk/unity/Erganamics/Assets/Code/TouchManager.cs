@@ -24,6 +24,14 @@ public class TouchManager : MonoBehaviour {
     public StuffManager stuffManager;
     public Baby baby;
 
+    private bool touchedCandy = false;
+
+    public bool TouchedCandy
+    {
+        get { return this.touchedCandy; }
+        set { this.touchedCandy = value; }
+    }
+
 	// Use this for initialization
 	void Start () {
 	    
@@ -58,10 +66,7 @@ public class TouchManager : MonoBehaviour {
             ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
             activeDrags.Add(touch.fingerId, drag);
         }
-        //else if (baby.State == Baby.BabyState.AWAKE)
-        //{
-        //    baby.State = Baby.BabyState.ANGRY;
-        //}
+        touchedCandy = true;
 
     }
 
