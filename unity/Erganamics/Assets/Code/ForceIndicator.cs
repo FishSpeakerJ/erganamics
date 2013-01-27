@@ -14,28 +14,21 @@ public struct ForceSample {
     }
 }
 
-public class ForceIndicator : MonoBehaviour {
-    public Transform ring;
-    public Transform dot;
-    public float targetForce;
-    public float minForce;
-    public float maxForce;
-    public float sampleInterval;
-    public float indicatorWidth;
+public enum ForceState {
+    TooLow,
+    TooHigh,
+    JustRight,
+}
 
-    public float CurrentForce {
-        get {
-            if( forceSamples.Count > 0 ) {
-                float sum = 0f;
-                foreach( var forceSample in forceSamples ) {
-                    sum += forceSample.force;
-                }
-                return sum / forceSamples.Count;
-            } else {
-                return minForce + (maxForce - minForce) / 2f;
-            }
-        }
-    }
+public class ForceIndicator : MonoBehaviour {
+    //public Transform ring;
+    //public Transform dot;
+    //public float targetForce;
+    //public float indicatorWidth;
+    public float minAmplitude = 0.05f;
+    public float maxAmplitude = 0.25f;
+    public float sampleInterval = 4f;
+    public bool showDebugText;
 
     private List<ForceSample> forceSamples = new List<ForceSample>();
 
@@ -45,32 +38,67 @@ public class ForceIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	private void Update() {
-        var quadWidth = ring.localScale.x;
-        var quadHeight = ring.localScale.y;
-
-        forceSamples.Add( new ForceSample( Time.time, Mathf.Abs( Input.acceleration.x ) ) );
+        forceSamples.Add( new ForceSample( Time.time, Input.acceleration.x ) );
 
         float timeoutThreshold = Time.time - sampleInterval;
         while( forceSamples[0].time < timeoutThreshold ) {
             forceSamples.RemoveAt( 0 );
         }
 
-        var currentForcePortion = Mathf.Clamp01( (CurrentForce - minForce) / (maxForce - minForce) );
-        var dotX = Util.screenWidth / 2f + (indicatorWidth / 2f) * (currentForcePortion * 2f - 1f);
-        dot.position = new Vector3( dotX, Util.screenHeight - quadHeight, 0 );
+        //var quadWidth = ring.localScale.x;
+        //var quadHeight = ring.localScale.y;
 
-        var targetForcePortion = Mathf.Clamp01( (targetForce - minForce) / (maxForce - minForce) );
-        var ringX = Util.screenWidth / 2f + (indicatorWidth / 2f) * (targetForcePortion * 2f - 1f);
-        ring.position = new Vector3( ringX, Util.screenHeight - quadHeight, 0 );
+        //var averageAmplitudePortion = Mathf.Clamp01( (GetAverageAmplitude() - minAmplitude) / (maxAmplitude - minAmplitude) );
+        //var dotX = Util.screenWidth / 2f + (indicatorWidth / 2f) * (averageAmplitudePortion * 2f - 1f);
+        //dot.position = new Vector3( dotX, Util.screenHeight - quadHeight, 0 );
+
+        //var targetForcePortion = Mathf.Clamp01( (targetForce - minAmplitude) / (maxAmplitude - minAmplitude) );
+        //var ringX = Util.screenWidth / 2f + (indicatorWidth / 2f) * (targetForcePortion * 2f - 1f);
+        //ring.position = new Vector3( ringX, Util.screenHeight - quadHeight, 0 );
+    }
+
+    public ForceState GetState() {
+        float averageAmplitude = GetAverageAmplitude();
+        if( averageAmplitude < minAmplitude ) {
+            return ForceState.TooLow;
+        } else if( averageAmplitude > maxAmplitude ) {
+            return ForceState.TooHigh;
+        } else {
+            return ForceState.JustRight;
+        }
+    }
+
+    public float GetAverageForce() {
+        if( forceSamples.Count > 0 ) {
+            float sum = 0f;
+            foreach( var forceSample in forceSamples ) {
+                sum += forceSample.force;
+            }
+            return sum / forceSamples.Count;
+        } else {
+            return 0f;
+        }
+    }
+
+    public float GetAverageAmplitude() {
+        if( forceSamples.Count > 0 ) {
+            float avgForce = GetAverageForce();
+            float sum = 0f;
+            foreach( var forceSample in forceSamples ) {
+                var adjustedSample = Mathf.Abs( forceSample.force - avgForce );
+                sum += adjustedSample;
+            }
+            return sum / forceSamples.Count;
+        } else {
+            return 0f;
+        }
     }
 
     private void OnGUI() {
-        GUI.Label( new Rect( 10f, 0f, 1000f, 20f ), string.Format( "targetForce {0}", targetForce ) );
-        GUI.Label( new Rect( 10f, 20f, 1000f, 20f ), string.Format( "CurrentForce {0}", CurrentForce ) );
-        //GUI.Label( new Rect( 10f, 40f, 1000f, 20f ), string.Format( "compassRange: {0}", compassRange ) );
-        //GUI.Label( new Rect( 10f, 60f, 1000f, 20f ), string.Format( "y/x: {0}", Mathf.Atan2( Input.compass.rawVector.y, Input.compass.rawVector.x ) ) );
-        //GUI.Label( new Rect( 10f, 80f, 1000f, 20f ), string.Format( "x/z: {0}", Mathf.Atan2( Input.compass.rawVector.x, Input.compass.rawVector.z ) ) );
-        //GUI.Label( new Rect( 10f, 100f, 1000f, 20f ), string.Format( "z/y: {0}", Mathf.Atan2( Input.compass.rawVector.z, Input.compass.rawVector.y ) ) );
+        if( showDebugText ) {
+            GUI.Label( new Rect( 10f, 0f, 1000f, 20f ), string.Format( "ForceState: {0}", GetState() ) );
+            GUI.Label( new Rect( 10f, 20f, 1000f, 20f ), string.Format( "AverageAmplitude: {0}", GetAverageAmplitude() ) );
+        }
 
         //if( GUI.Button( new Rect( 1200f, 0f, 80f, 80f ), "Sample" ) ) {
         //    AddSample();
