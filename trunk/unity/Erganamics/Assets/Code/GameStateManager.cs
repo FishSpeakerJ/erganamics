@@ -6,7 +6,9 @@ public class GameStateManager : MonoBehaviour {
 
     public GameObject winScreen;
     public GameObject loseScreen;
+    public GameObject replayButton;
 
+    public StuffManager stuffManager;
 
     public Action exitCurrentState { get; set; }
     private Settings.GameState currentState = Settings.GameState.Title;
@@ -18,7 +20,6 @@ public class GameStateManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     public bool changeStateTo(Settings.GameState newState)
@@ -56,6 +57,7 @@ public class GameStateManager : MonoBehaviour {
 
     bool enterTitle()
     {
+        stuffManager.resetLevel();
         return true;
     }
 
@@ -75,12 +77,14 @@ public class GameStateManager : MonoBehaviour {
     bool enterWin()
     {
         this.winScreen.SetActive(true);
+        this.replayButton.SetActive(true);
         return true;
     }
 
     void exitWin()
     {
         this.winScreen.SetActive(false);
+        this.replayButton.SetActive(false);
     }
 
     bool enterLose()

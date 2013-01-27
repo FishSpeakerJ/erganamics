@@ -18,6 +18,22 @@ public class StuffManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        resetLevel();
+    }
+
+    public void resetLevel()
+    {
+        if (listOfCandy.Count > 0 || listOfStuff.Count > 0)
+        {
+            foreach (PieceOfStuff p in listOfStuff)
+            {
+                Object.Destroy(p.gameObject);
+            }
+            foreach (PieceOfCandy p in listOfCandy)
+            {
+                Object.Destroy(p.gameObject);
+            }
+        }
         // Pre-compute the candy bag bounds
         Bounds bagBounds = candyBag.collider.bounds;
         bagRect = new Rect(bagBounds.min.x, bagBounds.max.y, bagBounds.size.x, bagBounds.size.y);
@@ -48,7 +64,6 @@ public class StuffManager : MonoBehaviour {
             quad.transform.Rotate(new Vector3(0,0, Random.Range(0f, 360f)));
             listOfCandy.Add(quad.AddComponent<PieceOfCandy>());
         }
-
 	}
 
     public Rect BagRect { get { return this.bagRect; } }

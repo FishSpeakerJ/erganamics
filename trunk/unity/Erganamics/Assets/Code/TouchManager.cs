@@ -23,6 +23,7 @@ public class TouchManager : MonoBehaviour {
 
     public StuffManager stuffManager;
     public Baby baby;
+    public GameStateManager gameStateManager;
 
 
     public float speed = 0.0f;
@@ -152,6 +153,10 @@ public class TouchManager : MonoBehaviour {
                 if (Physics.Raycast(ray, out hit) && IsDraggable(hit.collider.gameObject))
                 {
                     BeginDrag(t, hit.transform, hitPoint);
+                }
+                else if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.name == "ReplayButton")
+                {
+                    gameStateManager.changeStateTo(Settings.GameState.Title);
                 }
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
