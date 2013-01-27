@@ -5,7 +5,7 @@ using Erganamics;
 
 public class TouchManager : MonoBehaviour {
 
-    private class ActiveDrag
+    public class ActiveDrag
     {
         public int touchId;
         public Transform touchObject;
@@ -178,7 +178,7 @@ public class TouchManager : MonoBehaviour {
                 }
             }
         }
-        stuffManager.SetDropFeedbackVisibility(isOverBag);
+        stuffManager.SetDropFeedbackVisibility(isOverBag, activeDrags);
 	}
 
     private void OnGUI()
