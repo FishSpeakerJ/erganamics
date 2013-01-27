@@ -28,6 +28,7 @@ public class Settings : MonoBehaviour {
     public float timeToPauseOnEachFrameOfTutorial = 0.6f;  //secs
     public float timeToShowWarningFor = 2.0f;  //secs
 
+    public int scareCount = 5;
     public Material quadMaterial;
 
     private void Awake() {
