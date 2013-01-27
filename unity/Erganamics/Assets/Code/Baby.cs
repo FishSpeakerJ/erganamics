@@ -220,6 +220,7 @@ public class Baby : MonoBehaviour {
         this.finalBaby.SetActive(false);
         this.finalBabyAngry.SetActive(false);
         this.State = BabyState.AWAKE;
+        angryCount = 0;
         UpdateTextures();
     }
 
