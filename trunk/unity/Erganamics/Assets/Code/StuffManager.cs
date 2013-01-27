@@ -9,7 +9,7 @@ public class StuffManager : MonoBehaviour {
     public GameObject dreamBubble;
     public GameObject candyBag;
     public GameObject candyToFind;
-
+    public GameStateManager gameStateManager;
     public Rect bagRect;
 
     private List<PieceOfStuff> listOfStuff = new List<PieceOfStuff>();
@@ -62,5 +62,10 @@ public class StuffManager : MonoBehaviour {
             listOfStuff.Remove(pOs);
         }
         Destroy(piece);
+
+        if (listOfCandy.Count == 0)
+        {
+            gameStateManager.changeStateTo(Settings.GameState.Win);
+        }
     }
 }

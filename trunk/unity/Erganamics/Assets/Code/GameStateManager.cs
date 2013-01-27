@@ -3,6 +3,11 @@ using System.Collections;
 using System;
 
 public class GameStateManager : MonoBehaviour {
+
+    public GameObject winScreen;
+    public GameObject loseScreen;
+
+
     public Action exitCurrentState { get; set; }
     private Settings.GameState currentState = Settings.GameState.Title;
 
@@ -16,7 +21,7 @@ public class GameStateManager : MonoBehaviour {
 	
 	}
 
-    bool changeStateTo(Settings.GameState newState)
+    public bool changeStateTo(Settings.GameState newState)
     {
         Debug.Log("I'm supposed to change state to '" + newState + "'");
         if (exitCurrentState != null)
@@ -69,20 +74,24 @@ public class GameStateManager : MonoBehaviour {
 
     bool enterWin()
     {
+        this.winScreen.active = true;
         return true;
     }
 
     void exitWin()
     {
+        this.winScreen.active = false;
     }
 
     bool enterLose()
     {
+        this.loseScreen.active = true;
         return true;
     }
 
     void exitLose()
     {
+        this.loseScreen.active = false;
     }
 
 
