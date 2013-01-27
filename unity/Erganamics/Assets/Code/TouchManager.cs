@@ -81,6 +81,7 @@ public class TouchManager : MonoBehaviour {
         else
         {
             badTouchCandy = true;
+            baby.startRockingTutorial();
         }
 
     }

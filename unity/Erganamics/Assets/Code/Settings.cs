@@ -18,8 +18,14 @@ public class Settings : MonoBehaviour {
     public int piecesOfCandy = 5;
     public int piecesOfStuff = 80;
     public float babySpeedAwakeThreshold = 1000.0f;
-
     public Color[] candyColors = new Color[] { new Color(1, 0, 0), new Color(0, 1, 0), new Color(0, 0, 1), new Color(1, 1, 0), new Color(0, 1, 1), new Color(1, 0, 1) };
+
+    // tutorial vars
+    public float maxTimeBacklogAllowedForViewingRockingTutorial = 6.0f;  //secs
+    public float timeToAddToViewingTimeBacklogForRockingTutorialEachIncident = 2.0f;  //secs
+    public float timeSpentInAwakeStateBeforeShowingTutorial = 4.0f;  //secs
+    public float timeToFadeInTutorialOver = 1.0f;  // secs
+    public float timeToPauseOnEachFrameOfTutorial = 0.6f;  //secs
 
     public Material quadMaterial;
 
