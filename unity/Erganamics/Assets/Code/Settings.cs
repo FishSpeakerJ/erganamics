@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Settings : MonoBehaviour {
     // The first state is what the game will start in
-    public enum GameState { Title, TutorialHoldBaby, TutorialRockBaby, TutorialStealCandy, MainGame, Win, Lose };
+    public enum GameState { Title, TutorialHoldBaby, TutorialRockBaby, TutorialStealCandy, MainGame, PassTablet, Win, Lose };
 
     public static Settings Instance { get; private set; }
 
