@@ -74,24 +74,24 @@ public class GameStateManager : MonoBehaviour {
 
     bool enterWin()
     {
-        this.winScreen.active = true;
+        this.winScreen.SetActive(true);
         return true;
     }
 
     void exitWin()
     {
-        this.winScreen.active = false;
+        this.winScreen.SetActive(false);
     }
 
     bool enterLose()
     {
-        this.loseScreen.active = true;
+        this.loseScreen.SetActive(true);
         return true;
     }
 
     void exitLose()
     {
-        this.loseScreen.active = false;
+        this.loseScreen.SetActive(false);
     }
 
 
