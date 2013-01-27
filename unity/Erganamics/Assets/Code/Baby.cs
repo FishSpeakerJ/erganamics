@@ -7,18 +7,25 @@ public class Baby : MonoBehaviour {
     {
         ASLEEP,
         ANGRY,
-        AWAKE
+        AWAKE,
+        STARTLED,
+        DISTURBED
     }
 
     public TouchManager touchManager;
     public ForceIndicator forceIndicator;
 	public GameObject babyBody;
-    public Material asleepMaterial;
+    public GameObject babyHead;
+    public Material asleep1Material;
+    public Material asleep2Material;
+    public Material asleep3Material;
     public Material angryMaterial;
-    public Material awakeMaterial;
+    public Material halfAwakeMaterial;
+    public Material startledMaterial;
 
 
     private BabyState babyState = BabyState.ASLEEP;
+    private BabyState previousState = BabyState.ASLEEP;
     private float timeInState = 0;
     private bool playingLullaby = false;
 
@@ -100,7 +107,82 @@ public class Baby : MonoBehaviour {
                     break;
             }
         }
+        UpdateTextures();
 	}
+
+    private void UpdateTextures()
+    {
+        if (babyState == BabyState.ASLEEP)
+        {
+            float animTime = timeInState % 5f;
+            if (animTime < 2)
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+            else if (animTime < 2.25)
+            {
+                babyHead.renderer.material = asleep2Material;
+            }
+            else if (animTime < 2.5)
+            {
+                babyHead.renderer.material = asleep3Material;
+            }
+            else if (animTime < 2.75)
+            {
+                babyHead.renderer.material = asleep2Material;
+            }
+            else if (animTime < 3)
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+            else
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+        }
+        else if (babyState == BabyState.AWAKE)
+        {
+            if (timeInState < .5)
+            {
+                babyHead.renderer.material = halfAwakeMaterial;
+            }
+            else if (timeInState < 1.25)
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+            else if (timeInState < 2)
+            {
+                babyHead.renderer.material = halfAwakeMaterial;
+            }
+            else if (timeInState < 2.5)
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+            else if (timeInState < 3)
+            {
+                babyHead.renderer.material = halfAwakeMaterial;
+            }
+            else if (timeInState < 3.25)
+            {
+                babyHead.renderer.material = asleep1Material;
+            }
+            else
+            {
+                babyHead.renderer.material = halfAwakeMaterial;
+            }
+        }
+        else if (babyState == BabyState.ANGRY)
+        {
+            if (timeInState < 1.5)
+            {
+                babyHead.renderer.material = startledMaterial;
+            }
+            else
+            {
+                babyHead.renderer.material = angryMaterial;
+            }
+        }
+    }
 
     public BabyState State
     {
@@ -113,12 +195,12 @@ public class Baby : MonoBehaviour {
                 
                 if (value == BabyState.ASLEEP)
                 {
-                    babyBody.renderer.material = asleepMaterial;
+                    babyHead.renderer.material = asleep1Material;
                     AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Slow");
                 }
                 else if (value == BabyState.AWAKE)
                 {
-                    babyBody.renderer.material = awakeMaterial;
+                    babyHead.renderer.material = startledMaterial;
                     AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Normal");
                     if (babyState == BabyState.ASLEEP)
                     {
@@ -127,7 +209,7 @@ public class Baby : MonoBehaviour {
                 }
                 else if (value == BabyState.ANGRY)
                 {
-                    babyBody.renderer.material = angryMaterial;
+                    babyHead.renderer.material = angryMaterial;
                     AudioManager.Instance.FadeToMusic(1, "GGJ13_Theme_Fast");
                     AudioManager.Instance.PlaySoundEffect("crying1");
                 }
