@@ -79,30 +79,41 @@ public class Baby : MonoBehaviour {
                     rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 }
                 rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, tutorialFadeTimeCount / Settings.Instance.timeToFadeInTutorialOver);
-                rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, tutorialFadeTimeCount / Settings.Instance.timeToFadeInTutorialOver);
+                //rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, tutorialFadeTimeCount / Settings.Instance.timeToFadeInTutorialOver);
             }
-            timeOnThisTutorialFrame += Time.deltaTime;
-            if (timeOnThisTutorialFrame > Settings.Instance.timeToPauseOnEachFrameOfTutorial)
+            else
             {
-                if (currentTutorialFrame == 0)
+                timeOnThisTutorialFrame += Time.deltaTime;
+                if (timeOnThisTutorialFrame > Settings.Instance.timeToPauseOnEachFrameOfTutorial)
                 {
-                    rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-                    rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    if (currentTutorialFrame == 0)
+                    {
+                        rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                        rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    }
+                    else
+                    {
+                        rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    }
+                    currentTutorialFrame = 1 - currentTutorialFrame;
+                    timeOnThisTutorialFrame = 0.0f;
                 }
-                else
+                if (timeLeftToDisplayRockingTutorial < 0)
                 {
-                    rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    if (State == BabyState.AWAKE || State == BabyState.ANGRY)
+                    {
+                        timeLeftToDisplayRockingTutorial = Settings.Instance.maxTimeBacklogAllowedForViewingRockingTutorial;
+                    }
+                    else
+                    {
+                        rockingTutorial1.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                        rockingTutorial2.renderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                        tutorialVisible = false;
+                        fadeInTutorial = false;
+                    }
                 }
-                currentTutorialFrame = 1 - currentTutorialFrame;
-                timeOnThisTutorialFrame = 0.0f;
             }
-            if (timeLeftToDisplayRockingTutorial < 0)
-            {
-                tutorialVisible = false;
-                fadeInTutorial = false;
-            }
-
         }   
 
         if (forceIndicator.GetState() == ForceState.JustRight)
@@ -155,6 +166,10 @@ public class Baby : MonoBehaviour {
                             if (forceIndicator.GetState() == ForceState.JustRight)
                             {
                                 State = BabyState.ASLEEP;
+                                if (timeLeftToDisplayRockingTutorial > 0)
+                                {
+                                    timeLeftToDisplayRockingTutorial = Settings.Instance.maxTimeBacklogAllowedForViewingRockingTutorial;
+                                }
                             }
                             else if (forceIndicator.GetState() == ForceState.TooHigh)
                             {
