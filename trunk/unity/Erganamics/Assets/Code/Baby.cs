@@ -39,7 +39,7 @@ public class Baby : MonoBehaviour {
     private BabyState previousState = BabyState.ASLEEP;
     private float timeInState = 0;
     private bool playingLullaby = false;
-    private bool isDone = false;
+    private bool isDone = true;
     private int angryCount = 0;
 	// Use this for initialization
 	void Start () {
@@ -211,6 +211,11 @@ public class Baby : MonoBehaviour {
         }
         
         isDone = true;
+    }
+
+    public void SetIsDone(bool isDone)
+    {
+        this.isDone = isDone;
     }
 
     public void ResetBaby()
