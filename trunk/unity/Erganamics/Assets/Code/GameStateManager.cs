@@ -56,7 +56,7 @@ public class GameStateManager : MonoBehaviour {
     bool enterTitle()
     {
         stuffManager.resetLevel();
-        baby.State = Baby.BabyState.AWAKE;
+        baby.ResetBaby();
         return true;
     }
 
