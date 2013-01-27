@@ -102,7 +102,7 @@ public class Baby : MonoBehaviour {
                 }
                 if (timeLeftToDisplayRockingTutorial < 0)
                 {
-                    if (State == BabyState.AWAKE || State == BabyState.ANGRY)
+                    if (!isDone && (State == BabyState.AWAKE || State == BabyState.ANGRY))
                     {
                         timeLeftToDisplayRockingTutorial = Settings.Instance.maxTimeBacklogAllowedForViewingRockingTutorial;
                     }
@@ -215,6 +215,7 @@ public class Baby : MonoBehaviour {
 
     public void ResetBaby()
     {
+        isDone = false;
         this.babyBody.SetActive(true);
         this.babyHead.SetActive(true);
         this.finalBaby.SetActive(false);
@@ -365,8 +366,7 @@ public class Baby : MonoBehaviour {
         {
             if (isDone)
             {
-                isDone = false;
-
+                return;
             }
             if (babyState != value)
             {
