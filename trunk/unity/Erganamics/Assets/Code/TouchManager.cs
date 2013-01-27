@@ -81,7 +81,7 @@ public class TouchManager : MonoBehaviour {
 
     }
 
-    private void ContinueDrag(ETouch touch, Vector3 newPt)
+    private bool ContinueDrag(ETouch touch, Vector3 newPt)
     {
         ActiveDrag drag = activeDrags[touch.fingerId];
         Vector2 clickOffset = new Vector2(newPt.x - drag.previousPt.x, newPt.y - drag.previousPt.y);
@@ -96,6 +96,11 @@ public class TouchManager : MonoBehaviour {
         {
             candyTooFast = false;
         }
+        if (RectContains(stuffManager.BagRect, newPt))
+        {
+            return true;
+        }
+        return false;
     }
 
     private bool IsDraggable(GameObject g)
@@ -119,6 +124,7 @@ public class TouchManager : MonoBehaviour {
             }
         }
         ETouch[] touches = Erganamics.TouchUtils.GetTouches();
+        bool isOverBag = false;
         foreach (ETouch t in touches)
         {
             Ray ray = Camera.main.ScreenPointToRay(t.positionV3);
@@ -144,14 +150,19 @@ public class TouchManager : MonoBehaviour {
                     BeginDrag(t, hit.transform, hitPoint);
                 }
             }
-            else if (t.phase == TouchPhase.Moved)
+            else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
-                    ContinueDrag(t, hitPoint);
+                    bool overBag = ContinueDrag(t, hitPoint);
+                    if (overBag)
+                    {
+                        isOverBag = true;
+                    }
                 }
             }
         }
+        stuffManager.SetDropFeedbackVisibility(isOverBag);
 	}
 
     private void OnGUI()

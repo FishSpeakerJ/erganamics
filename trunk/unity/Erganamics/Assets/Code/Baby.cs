@@ -43,7 +43,6 @@ public class Baby : MonoBehaviour {
             touchManager.CandyTooFast = false;
             if (State == BabyState.ASLEEP)
             {
-
                 State = BabyState.AWAKE;
             }
         }

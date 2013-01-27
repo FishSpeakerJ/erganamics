@@ -6,9 +6,8 @@ using Erganamics;
 // This will create a pile of stuff (instances of PieceOfStuff) you can sift through
 public class StuffManager : MonoBehaviour {
 
-    public GameObject dreamBubble;
     public GameObject candyBag;
-    public GameObject candyToFind;
+    public GameObject bagGlow;
     public GameStateManager gameStateManager;
     public Rect bagRect;
 
@@ -48,6 +47,11 @@ public class StuffManager : MonoBehaviour {
     {
 	
 	}
+
+    public void SetDropFeedbackVisibility(bool visible)
+    {
+        this.bagGlow.SetActive(visible);
+    }
 
     public void HandleDropPieceOnBag(GameObject piece)
     {
