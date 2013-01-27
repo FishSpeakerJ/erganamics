@@ -7,7 +7,7 @@ public class Settings : MonoBehaviour {
     public enum GameState { Title, TutorialHoldBaby, TutorialRockBaby, TutorialStealCandy, MainGame, PassTablet, Win, Lose };
 
     public static Settings Instance { get; private set; }
-
+    public float pickupScale = 1.2f;
     public float babyZ = 50.0f;
     public float candyZ = 40.0f;
     public float stuffZ = 20.0f;

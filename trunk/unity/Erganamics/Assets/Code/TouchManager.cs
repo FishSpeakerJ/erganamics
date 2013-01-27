@@ -60,6 +60,7 @@ public class TouchManager : MonoBehaviour {
     private void EndDrag(int key, Vector3 pt)
     {
         ActiveDrag drag = activeDrags[key];
+        drag.touchObject.gameObject.transform.localScale /= Settings.Instance.pickupScale;
         activeDrags.Remove(key);
         if (RectContains(stuffManager.BagRect, pt))
         {
@@ -73,6 +74,7 @@ public class TouchManager : MonoBehaviour {
         {
             ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
             activeDrags.Add(touch.fingerId, drag);
+            t.gameObject.transform.localScale = t.gameObject.transform.localScale * Settings.Instance.pickupScale;
         }
         else
         {
