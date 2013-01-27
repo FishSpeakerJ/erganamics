@@ -58,11 +58,16 @@ public class TouchManager : MonoBehaviour {
         return false;
     }
 
-    private void EndDrag(int key, Vector3 pt)
+    private void EndDrag(int key, Vector3 pt, bool forceReturn)
     {
         ActiveDrag drag = activeDrags[key];
         drag.touchObject.gameObject.transform.localScale /= Settings.Instance.pickupScale;
         stuffManager.PutOnTop(drag.touchObject.gameObject);
+        if (forceReturn)
+        {
+            drag.touchObject.gameObject.transform.position = drag.touchObject.gameObject.GetComponent<PieceOfCandy>().originalPosition;
+            return;
+        }
         if (RectContains(stuffManager.BagRect, pt))
         {
             stuffManager.HandleDropPieceOnBag(drag.touchObject.gameObject);
@@ -125,7 +130,7 @@ public class TouchManager : MonoBehaviour {
         {
             foreach (int key in activeDrags.Keys)
             {
-                EndDrag(key, activeDrags[key].touchObject.gameObject.transform.position);
+                EndDrag(key, activeDrags[key].touchObject.gameObject.transform.position, true);
             }
             activeDrags.Clear();
         }
@@ -141,7 +146,7 @@ public class TouchManager : MonoBehaviour {
             {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
-                    EndDrag(t.fingerId, hitPoint);
+                    EndDrag(t.fingerId, hitPoint, false);
                     activeDrags.Remove(t.fingerId);
                 }
             }
@@ -149,7 +154,7 @@ public class TouchManager : MonoBehaviour {
             {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
-                    EndDrag(t.fingerId, hitPoint);
+                    EndDrag(t.fingerId, hitPoint, false);
                     activeDrags.Remove(t.fingerId);
                 }
                 RaycastHit hit;
