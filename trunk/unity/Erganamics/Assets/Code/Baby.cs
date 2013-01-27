@@ -10,6 +10,7 @@ public class Baby : MonoBehaviour {
         AWAKE
     }
 
+    public ForceIndicator forceIndicator;
 	public GameObject babyBody;
     public Material asleepMaterial;
     public Material angryMaterial;
@@ -26,38 +27,40 @@ public class Baby : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Time.time - startTime > 2f)
+
+        if (forceIndicator.GetState() == ForceState.TooLow)
         {
-            startTime = Time.time;
-            if (babyState == BabyState.ASLEEP)
-            {
-                SetBabyState(BabyState.AWAKE);
-            }
-            else if (babyState == BabyState.AWAKE)
-            {
-                SetBabyState(BabyState.ANGRY);
-            }
-            else if (babyState == BabyState.ANGRY)
-            {
-                SetBabyState(BabyState.ASLEEP);
-            }
+            State = BabyState.AWAKE;
+        }
+        else if (forceIndicator.GetState() == ForceState.JustRight)
+        {
+            State = BabyState.ASLEEP;
+        }
+        else if (forceIndicator.GetState() == ForceState.TooHigh)
+        {
+            State = BabyState.ANGRY;
         }
 	}
 
-    public void SetBabyState(BabyState state)
+    public BabyState State
     {
-        babyState = state;
-        if (babyState == BabyState.ASLEEP)
+        get { return this.babyState; }
+        set
         {
-            babyBody.renderer.material = asleepMaterial;
-        }
-        else if (babyState == BabyState.AWAKE)
-        {
-            babyBody.renderer.material = awakeMaterial;
-        }
-        else if (babyState == BabyState.ANGRY)
-        {
-            babyBody.renderer.material = angryMaterial;
+            babyState = value;
+            if (babyState == BabyState.ASLEEP)
+            {
+                babyBody.renderer.material = asleepMaterial;
+            }
+            else if (babyState == BabyState.AWAKE)
+            {
+                babyBody.renderer.material = awakeMaterial;
+            }
+            else if (babyState == BabyState.ANGRY)
+            {
+                babyBody.renderer.material = angryMaterial;
+            }
         }
     }
+
 }

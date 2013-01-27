@@ -22,6 +22,7 @@ public class TouchManager : MonoBehaviour {
     private Dictionary<int, ActiveDrag> activeDrags = new Dictionary<int, ActiveDrag>();
 
     public StuffManager stuffManager;
+    public Baby baby;
 
 	// Use this for initialization
 	void Start () {
@@ -52,8 +53,16 @@ public class TouchManager : MonoBehaviour {
 
     private void BeginDrag(ETouch touch, Transform t, Vector3 pt)
     {
-        ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
-        activeDrags.Add(touch.fingerId, drag);
+        if (baby.State == Baby.BabyState.ASLEEP)
+        {
+            ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
+            activeDrags.Add(touch.fingerId, drag);
+        }
+        //else if (baby.State == Baby.BabyState.AWAKE)
+        //{
+        //    baby.State = Baby.BabyState.ANGRY;
+        //}
+
     }
 
     private void ContinueDrag(ETouch touch, Vector3 newPt)
