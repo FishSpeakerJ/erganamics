@@ -24,12 +24,12 @@ public class TouchManager : MonoBehaviour {
     public StuffManager stuffManager;
     public Baby baby;
 
-    private bool touchedCandy = false;
+    private bool badTouchCandy = false;
 
-    public bool TouchedCandy
+    public bool BadTouchCandy
     {
-        get { return this.touchedCandy; }
-        set { this.touchedCandy = value; }
+        get { return this.badTouchCandy; }
+        set { this.badTouchCandy = value; }
     }
 
 	// Use this for initialization
@@ -66,7 +66,10 @@ public class TouchManager : MonoBehaviour {
             ActiveDrag drag = new ActiveDrag(touch.fingerId, t, pt);
             activeDrags.Add(touch.fingerId, drag);
         }
-        touchedCandy = true;
+        else
+        {
+            badTouchCandy = true;
+        }
 
     }
 

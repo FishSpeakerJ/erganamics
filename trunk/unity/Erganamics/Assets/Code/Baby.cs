@@ -30,12 +30,12 @@ public class Baby : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         timeInState += Time.deltaTime;
-        bool touchedCandy = touchManager.TouchedCandy;
+        bool touchedCandy = touchManager.BadTouchCandy;
 
 
-        if (touchManager.TouchedCandy)
+        if (touchManager.BadTouchCandy)
         {
-            touchManager.TouchedCandy = false;
+            touchManager.BadTouchCandy = false;
             State = BabyState.ANGRY;
         }
         else
