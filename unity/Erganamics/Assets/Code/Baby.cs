@@ -49,7 +49,7 @@ public class Baby : MonoBehaviour {
 	
     public void startRockingTutorial()
     {
-        if (timeLeftToDisplayRockingTutorial > 0)
+        if (isDone || timeLeftToDisplayRockingTutorial > 0)
         {
             return;
         }
@@ -63,7 +63,7 @@ public class Baby : MonoBehaviour {
         timeInState += Time.deltaTime;
 
         // If I've been awake long enough show the tutorial
-        if (timeInState > Settings.Instance.timeSpentInAwakeStateBeforeShowingTutorial && (State == BabyState.AWAKE || State == BabyState.ANGRY))
+        if (!isDone && timeInState > Settings.Instance.timeSpentInAwakeStateBeforeShowingTutorial && (State == BabyState.AWAKE || State == BabyState.ANGRY))
         {
             startRockingTutorial();
         }
