@@ -19,9 +19,7 @@ public class AudioManager : MonoBehaviour {
         } else {
             Debug.LogError( "Attempting to create more than one AudioManager object." );
         }
-    }
 
-    private void Start() {
         GameObject go = new GameObject();
         go.name = "SoundEffectSource";
         go.transform.parent = transform;
@@ -32,6 +30,9 @@ public class AudioManager : MonoBehaviour {
         for( int i = 0; i < numMusicTracks; i++ ) {
             musicTracks[i] = new MusicTrack( i, this );
         }
+    }
+
+    private void Start() {
     }
 
     public void PlaySoundEffect( string soundName ) {
