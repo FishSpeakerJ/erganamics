@@ -10,8 +10,8 @@ public class AudioManager : MonoBehaviour {
     public bool showTestGUI;
 
     public AudioSource soundEffectSource;
-    public AudioSource primaryMusicSource;
-    public AudioSource secondaryMusicSource;
+    public int numMusicTracks = 2;
+    public MusicTrack[] musicTracks;
 
     private void Awake() {
         if( Instance == null ) {
@@ -28,19 +28,10 @@ public class AudioManager : MonoBehaviour {
         soundEffectSource = go.AddComponent<AudioSource>();
         soundEffectSource.playOnAwake = false;
 
-        go = new GameObject();
-        go.name = "PrimaryMusicSource";
-        go.transform.parent = transform;
-        primaryMusicSource = go.AddComponent<AudioSource>();
-        primaryMusicSource.playOnAwake = false;
-        primaryMusicSource.loop = true;
-
-        go = new GameObject();
-        go.name = "SecondaryMusicSource";
-        go.transform.parent = transform;
-        secondaryMusicSource = go.AddComponent<AudioSource>();
-        secondaryMusicSource.playOnAwake = false;
-        secondaryMusicSource.loop = true;
+        musicTracks = new MusicTrack[numMusicTracks];
+        for( int i = 0; i < numMusicTracks; i++ ) {
+            musicTracks[i] = new MusicTrack( i, this );
+        }
     }
 
     public void PlaySoundEffect( string soundName ) {
@@ -52,48 +43,8 @@ public class AudioManager : MonoBehaviour {
         }
     }
 
-    public void FadeToMusic( string musicName ) {
-        AudioClip newMusicClip = null;
-        foreach( var musicClip in musicClips ) {
-            if( musicClip.name == musicName ) {
-                newMusicClip = musicClip;
-                break;
-            }
-        }
-        Debug.Log( string.Format( "newMusicClip: {0}", newMusicClip.name ) );
-
-        if( newMusicClip != null ) {
-            StopAllCoroutines();
-            secondaryMusicSource.Stop(); // Cancel whatever might be fading out.
-            StartCoroutine( FadeMusic( newMusicClip ) );
-        } else {
-            Debug.LogWarning( string.Format( "Couldn't find musicClip: {0}", musicName ) );
-        }
-    }
-
-    public IEnumerator FadeMusic( AudioClip newMusicClip ) {
-        AudioSource temp = primaryMusicSource;
-        primaryMusicSource = secondaryMusicSource;
-        secondaryMusicSource = temp;
-
-        primaryMusicSource.clip = newMusicClip;
-        primaryMusicSource.volume = 0f;
-        primaryMusicSource.Play();
-        var secondaryMusicStartVolume = secondaryMusicSource.volume;
-
-        var startTime = Time.time;
-        while( Time.time - startTime < fadeDuration ) {
-            var portion = (Time.time - startTime)/fadeDuration;
-            primaryMusicSource.volume = portion;
-            secondaryMusicSource.volume = Mathf.Lerp( secondaryMusicStartVolume, 0f, portion );
-            Debug.Log( string.Format( "portion: {0}", portion ) );
-            yield return null;
-        }
-
-        primaryMusicSource.volume = 1f;
-        secondaryMusicSource.Stop();
-
-        yield break;
+    public void FadeToMusic( int track, string musicName ) {
+        musicTracks[track].FadeToMusic( musicName );
     }
 
     private void OnGUI() {
@@ -106,13 +57,21 @@ public class AudioManager : MonoBehaviour {
                 y += 50f;
             }
 
-            y = 0f;
-            foreach( var musicClip in musicClips ) {
-                if( GUI.Button( new Rect( 210f, y, 300f, 45f ), string.Format( "Switch to music: {0}", musicClip.name ) ) ) {
-                    FadeToMusic( musicClip.name );
+            var x = 210f;
+            for( int i = 0; i < numMusicTracks; i++ ) {
+                y = 0f;
+                foreach( var musicClip in musicClips ) {
+                    if( GUI.Button( new Rect( x, y, 250f, 45f ), string.Format( "Switch to music: {0}", musicClip.name ) ) ) {
+                        FadeToMusic( i, musicClip.name );
+                    }
+                    y += 50f;
                 }
-                y += 50f;
+                if( GUI.Button( new Rect( x, y, 250f, 45f ), "Fade out music" ) ) {
+                    FadeToMusic( i, null );
+                }
+                x += 260;
             }
         }
     }
 }
+
