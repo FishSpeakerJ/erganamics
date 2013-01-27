@@ -199,7 +199,7 @@ public class Baby : MonoBehaviour {
     {
         this.babyBody.SetActive(false);
         this.babyHead.SetActive(false);
-        if (angryCount < 10)
+        if (angryCount < Settings.Instance.scareCount)
         {
             AudioManager.Instance.PlaySoundEffect("happy1");
             this.finalBaby.SetActive(true);
