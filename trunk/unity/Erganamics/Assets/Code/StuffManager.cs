@@ -80,10 +80,18 @@ public class StuffManager : MonoBehaviour {
     }
     private bool glowActive = false;
 
-    public void SetDropFeedbackVisibility(bool visible)
+    public void SetDropFeedbackVisibility(bool visible, Dictionary<int, TouchManager.ActiveDrag> activeDrags)
     {
-        glowActive = visible;
-        this.bagGlow.SetActive(visible);
+        if( activeDrags.Count > 0 ) {
+            this.bagGlow.SetActive(true);
+            Color c = this.bagGlow.renderer.material.color;
+            this.bagGlow.renderer.material.color = new Color( c.r, c.g, c.b, Mathf.Sin( Time.time*8f ) );
+        } else {
+            this.bagGlow.SetActive(false);
+        }
+
+        //glowActive = visible;
+        //this.bagGlow.SetActive(visible);
     }
 
     private void OnGUI()
