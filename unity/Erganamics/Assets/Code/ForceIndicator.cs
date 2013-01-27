@@ -29,8 +29,11 @@ public class ForceIndicator : MonoBehaviour {
     public float maxAmplitude = 0.25f;
     public float sampleInterval = 4f;
     public bool showDebugText;
+    public bool showOverrideGUI;
 
     private List<ForceSample> forceSamples = new List<ForceSample>();
+
+    private ForceState? overrideForceState = null;
 
 	// Use this for initialization
 	private void Start() {
@@ -58,6 +61,10 @@ public class ForceIndicator : MonoBehaviour {
     }
 
     public ForceState GetState() {
+        if( overrideForceState != null ) {
+            return (ForceState)overrideForceState;
+        }
+
         float averageAmplitude = GetAverageAmplitude();
         if( averageAmplitude < minAmplitude ) {
             return ForceState.TooLow;
@@ -98,6 +105,21 @@ public class ForceIndicator : MonoBehaviour {
         if( showDebugText ) {
             GUI.Label( new Rect( 10f, 0f, 1000f, 20f ), string.Format( "ForceState: {0}", GetState() ) );
             GUI.Label( new Rect( 10f, 20f, 1000f, 20f ), string.Format( "AverageAmplitude: {0}", GetAverageAmplitude() ) );
+        }
+
+        if( showOverrideGUI ) {
+            if( GUI.Button( new Rect( 10f, 50f, 200f, 45f ), "Override TooLow" ) ) {
+                overrideForceState = ForceState.TooLow;
+            }
+            if( GUI.Button( new Rect( 10f, 100f, 200f, 45f ), "Override TooHigh" ) ) {
+                overrideForceState = ForceState.TooHigh;
+            }
+            if( GUI.Button( new Rect( 10f, 150f, 200f, 45f ), "Override JustRight" ) ) {
+                overrideForceState = ForceState.JustRight;
+            }
+            if( GUI.Button( new Rect( 10f, 200f, 200f, 45f ), "Clear Override" ) ) {
+                overrideForceState = null;
+            }
         }
 
         //if( GUI.Button( new Rect( 1200f, 0f, 80f, 80f ), "Sample" ) ) {
