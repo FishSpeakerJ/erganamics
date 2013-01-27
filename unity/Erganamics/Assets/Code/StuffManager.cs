@@ -63,6 +63,7 @@ public class StuffManager : MonoBehaviour {
             quad.renderer.material = candyMaterials[i%candyMaterials.Length];
             quad.transform.Rotate(new Vector3(0,0, Random.Range(0f, 360f)));
             listOfCandy.Add(quad.AddComponent<PieceOfCandy>());
+            quad.GetComponent<PieceOfCandy>().originalPosition = new Vector3(quad.transform.position.x, quad.transform.position.y, quad.transform.position.z);
         }
 	}
 

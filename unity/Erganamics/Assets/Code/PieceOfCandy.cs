@@ -4,6 +4,7 @@ using System.Collections;
 public class PieceOfCandy : MonoBehaviour
 {
     private int candyType = 0;
+    public Vector3 originalPosition = new Vector3(0, 0, 0);
 
 	// Use this for initialization
 	void Start () {
