@@ -106,6 +106,7 @@ public class TouchManager : MonoBehaviour {
             candyTooFast = true;
             showSlowWarning = true;
             slowWarning.SetActive(true);
+            AudioManager.Instance.PlaySoundEffect("pop");
         }
         else
         {
