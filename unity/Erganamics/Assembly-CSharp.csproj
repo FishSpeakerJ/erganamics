@@ -47,12 +47,14 @@
      <Compile Include="Assets\Code\Baby.cs" />
      <Compile Include="Assets\Code\BackAndForth.cs" />
      <Compile Include="Assets\Code\ETouch.cs" />
+     <Compile Include="Assets\Code\ForceIndicator.cs" />
      <Compile Include="Assets\Code\GameStateManager.cs" />
-     <Compile Include="Assets\Code\Heartbeat.cs" />
      <Compile Include="Assets\Code\PieceOfCandy.cs" />
      <Compile Include="Assets\Code\PieceOfStuff.cs" />
+     <Compile Include="Assets\Code\RockingIndicator.cs" />
      <Compile Include="Assets\Code\Settings.cs" />
      <Compile Include="Assets\Code\StuffManager.cs" />
+     <Compile Include="Assets\Code\TempoIndicator.cs" />
      <Compile Include="Assets\Code\TouchManager.cs" />
      <Compile Include="Assets\Code\TouchUtils.cs" />
      <Compile Include="Assets\Code\Util.cs" />

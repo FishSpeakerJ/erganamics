@@ -44,10 +44,6 @@ public class TouchManager : MonoBehaviour {
     {
         ActiveDrag drag = activeDrags[touch.fingerId];
         activeDrags.Remove(touch.fingerId);
-
-        Bounds objectBounds = drag.touchObject.collider.bounds;
-        Rect objectRect = new Rect(objectBounds.min.x, objectBounds.max.y, objectBounds.size.x, objectBounds.size.y);
-
         if (RectContains(stuffManager.BagRect, pt))
         {
             stuffManager.HandleDropPieceOnBag(drag.touchObject.gameObject);
@@ -77,12 +73,9 @@ public class TouchManager : MonoBehaviour {
         return false;
     }
 
-    private int touchCount = 0;
-
 	// Update is called once per frame
 	void Update () {
         ETouch[] touches = Erganamics.TouchUtils.GetTouches();
-        touchCount = touches.Length;
         foreach (ETouch t in touches)
         {
             Ray ray = Camera.main.ScreenPointToRay(t.positionV3);
@@ -117,13 +110,4 @@ public class TouchManager : MonoBehaviour {
             }
         }
 	}
-
-    private void OnGUI()
-    {
-        //GUI.Label(new Rect(Screen.width / 2f, 100f, 100f, 20f), string.Format("Touches: {0}", touchCount));
-        //if (Input.GetMouseButton(0))
-        //{
-        //    GUI.Label(new Rect(Screen.width / 2f, 200f, 100f, 20f), "MOUSE!");
-        //}
-    }
 }
