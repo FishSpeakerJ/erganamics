@@ -3,10 +3,10 @@ using System.Collections;
 using System;
 
 public class GameStateManager : MonoBehaviour {
-
     public GameObject winScreen;
     public GameObject loseScreen;
     public GameObject replayButton;
+    public GameObject blackCurtain;
     public Baby baby;
     public StuffManager stuffManager;
 
@@ -77,15 +77,15 @@ public class GameStateManager : MonoBehaviour {
 
     bool enterWin()
     {
-        this.winScreen.SetActive(true);
-        this.replayButton.SetActive(true);
+        StartCoroutine( WinSequence() );
         return true;
     }
 
     void exitWin()
     {
-        this.winScreen.SetActive(false);
-        this.replayButton.SetActive(false);
+        winScreen.SetActive( false );
+        replayButton.SetActive( false );
+        blackCurtain.SetActive( false );
     }
 
     bool enterLose()
@@ -99,5 +99,21 @@ public class GameStateManager : MonoBehaviour {
         this.loseScreen.SetActive(false);
     }
 
+    private IEnumerator WinSequence() {
+        // -- show win screen
+        // -- fade to black
+        // -- show replay button
+        winScreen.SetActive( true );
+        yield return new WaitForSeconds( 2f );
+
+        yield return StartCoroutine( FadeToBlack.Instance.FadeOut( 3f ) );
+
+        // Switch from FadeToBlack (which uses OnGUI) to a black curtain,
+        // so we can show the replay button on top.
+        blackCurtain.SetActive( true );
+        FadeToBlack.Instance.alpha = 0f;
+
+        replayButton.SetActive( true );
+    }
 
 }
