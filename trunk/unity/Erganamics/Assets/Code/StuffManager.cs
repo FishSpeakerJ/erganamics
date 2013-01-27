@@ -148,6 +148,7 @@ public class StuffManager : MonoBehaviour {
             listOfStuff.Remove(pOs);
         }
         Destroy(piece);
+        AudioManager.Instance.PlaySoundEffect("candyGet");
 
         if (listOfCandy.Count == 0)
         {
