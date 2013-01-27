@@ -121,6 +121,10 @@ public class Baby : MonoBehaviour {
             }
             else if (animTime < 2.25)
             {
+                if (animTime - Time.deltaTime < 2)
+                {
+                    AudioManager.Instance.PlaySoundEffect("snoring");
+                }
                 babyHead.renderer.material = asleep2Material;
             }
             else if (animTime < 2.5)
