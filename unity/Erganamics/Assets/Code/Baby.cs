@@ -7,21 +7,21 @@ public class Baby : MonoBehaviour {
     {
         ASLEEP,
         ANGRY,
-        AWAKE,
-        STARTLED,
-        DISTURBED
+        AWAKE
     }
 
     public TouchManager touchManager;
     public ForceIndicator forceIndicator;
 	public GameObject babyBody;
     public GameObject babyHead;
+    public GameObject finalBaby;
     public Material asleep1Material;
     public Material asleep2Material;
     public Material asleep3Material;
     public Material angryMaterial;
     public Material halfAwakeMaterial;
     public Material startledMaterial;
+    public Material awakeMaterial;
 
 
     private BabyState babyState = BabyState.ASLEEP;

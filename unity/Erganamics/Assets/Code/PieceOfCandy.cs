@@ -8,7 +8,7 @@ public class PieceOfCandy : MonoBehaviour
 	// Use this for initialization
 	void Start () {
         candyType = Random.Range(0, Settings.Instance.candyColors.Length);
-        renderer.material.color = Settings.Instance.candyColors[candyType];
+        //renderer.material.color = Settings.Instance.candyColors[candyType];
         transform.localScale = Settings.Instance.candyScale;
 	}
 	
