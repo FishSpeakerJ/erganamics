@@ -185,6 +185,10 @@ public class TouchManager : MonoBehaviour {
                     {
                         gameStateManager.changeStateTo(Settings.GameState.Title);
                     }
+                    else if (hit.collider.gameObject.name == "StartScreen")
+                    {
+                        gameStateManager.changeStateTo(Settings.GameState.MainGame);
+                    }
                 }
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)

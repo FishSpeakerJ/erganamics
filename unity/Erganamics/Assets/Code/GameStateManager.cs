@@ -5,6 +5,7 @@ using System;
 public class GameStateManager : MonoBehaviour {
     public GameObject replayButton;
     public GameObject blackCurtain;
+    public GameObject startScreen;
     public Baby baby;
     public StuffManager stuffManager;
 
@@ -56,7 +57,7 @@ public class GameStateManager : MonoBehaviour {
     bool enterTitle()
     {
         stuffManager.resetLevel();
-        baby.ResetBaby();
+        startScreen.SetActive(true);
         return true;
     }
 
@@ -66,6 +67,8 @@ public class GameStateManager : MonoBehaviour {
 
     bool enterMainGame()
     {
+        startScreen.SetActive(false);
+        baby.ResetBaby();
         return true;
     }
 
