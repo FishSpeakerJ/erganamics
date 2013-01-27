@@ -24,12 +24,20 @@ public class TouchManager : MonoBehaviour {
     public StuffManager stuffManager;
     public Baby baby;
 
-    private bool badTouchCandy = false;
 
+    public float speed = 0.0f;
+    private bool badTouchCandy = false;
     public bool BadTouchCandy
     {
         get { return this.badTouchCandy; }
         set { this.badTouchCandy = value; }
+    }
+
+    private bool candyTooFast = false;
+    public bool CandyTooFast
+    {
+        get { return this.candyTooFast; }
+        set { this.candyTooFast = value; }
     }
 
 	// Use this for initialization
@@ -49,10 +57,10 @@ public class TouchManager : MonoBehaviour {
         return false;
     }
 
-    private void EndDrag(ETouch touch, Vector3 pt)
+    private void EndDrag(int key, Vector3 pt)
     {
-        ActiveDrag drag = activeDrags[touch.fingerId];
-        activeDrags.Remove(touch.fingerId);
+        ActiveDrag drag = activeDrags[key];
+        activeDrags.Remove(key);
         if (RectContains(stuffManager.BagRect, pt))
         {
             stuffManager.HandleDropPieceOnBag(drag.touchObject.gameObject);
@@ -79,6 +87,15 @@ public class TouchManager : MonoBehaviour {
         Vector2 clickOffset = new Vector2(newPt.x - drag.previousPt.x, newPt.y - drag.previousPt.y);
         drag.touchObject.position = new Vector3(drag.touchObject.position.x + clickOffset.x, drag.touchObject.position.y + clickOffset.y, drag.touchObject.position.z);
         drag.previousPt = newPt;
+        speed = clickOffset.magnitude / Time.deltaTime;
+        if (speed > Settings.Instance.babySpeedAwakeThreshold)
+        {
+            candyTooFast = true;
+        }
+        else
+        {
+            candyTooFast = false;
+        }
     }
 
     private bool IsDraggable(GameObject g)
@@ -92,6 +109,15 @@ public class TouchManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+        // Drop all current drags if the baby wakes up!
+        if (baby.State == Baby.BabyState.ANGRY || baby.State == Baby.BabyState.AWAKE)
+        {
+            foreach (int key in activeDrags.Keys)
+            {
+                EndDrag(key, activeDrags[key].touchObject.gameObject.transform.position);
+            }
+        }
         ETouch[] touches = Erganamics.TouchUtils.GetTouches();
         foreach (ETouch t in touches)
         {
@@ -103,14 +129,14 @@ public class TouchManager : MonoBehaviour {
             {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
-                    EndDrag(t, hitPoint);
+                    EndDrag(t.fingerId, hitPoint);
                 }
             }
             else if (t.phase == TouchPhase.Began)
             {
                 if (activeDrags.ContainsKey(t.fingerId))
                 {
-                    EndDrag(t, hitPoint);
+                    EndDrag(t.fingerId, hitPoint);
                 }
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit) && IsDraggable(hit.collider.gameObject))
@@ -127,4 +153,9 @@ public class TouchManager : MonoBehaviour {
             }
         }
 	}
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(10f, 80f, 1000f, 20f), string.Format("Speed: {0}", speed));
+    }
 }
